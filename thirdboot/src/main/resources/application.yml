@@ -1,0 +1,8 @@
+#配置服务器信息
+
+spring:
+    data:
+        mongodb:
+            database: deep-nlp-admin
+            uri: mongodb://deepNlpAdminUser:ssd2es3cke@192.168.20.89:27017/deep-nlp-admin?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000
+
