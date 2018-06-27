@@ -10,6 +10,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,33 +27,38 @@ public class SpiderTest {
     public static void main(String[] args) {
         SpeechApi speechApi = SpeechApi.getInstance();
         HashMap<String, Object> options = getGenerateOptions();
-        String filDirectory = "F:\\mp3source6";
+        String path = "source22";
+        String filDirectory = "F:\\source22";
 
         MongoClientURI mongoClientURI = new MongoClientURI(uri);
         MongoClient mongoClient = new MongoClient(mongoClientURI);
         MongoDatabase mongoDatabase = mongoClient.getDatabase("iengine3");
         MongoCollection<Document> childrenQuestionAnswer = mongoDatabase.getCollection("ChildrenQuestionAnswer");
 
-        //已经保存的id
-        MongoCollection<Document> generateHistory = mongoDatabase.getCollection("GenerateHistory");
+        //已经保存的id，不用这个。用queryExistTTS
+//        MongoCollection<Document> generateHistory = mongoDatabase.getCollection("GenerateHistory");
+//        Map<String, String> generateMap = getHadGenerateMap(generateHistory);
 
-        Map<String, String> generateMap = getHadGenerateMap(generateHistory);
+        AddToTTS addToTTS = new AddToTTS();
+
         FindIterable<Document> findIterable = childrenQuestionAnswer.find().noCursorTimeout(true);
         MongoCursor<Document> mongoCursor = findIterable.iterator();
         while (mongoCursor.hasNext()) {
             Document document = mongoCursor.next();
             Object id = document.get("_id");
+
+            ObjectId iid = new ObjectId(id.toString());
             //如果已经生成，则不重复生成
-            if (null == id || null != generateMap.get(id.toString())) {
+            if (null == id || addToTTS.queryExistTTS(iid)) {
                 continue;
             }
-            String name = document.get("answer").toString();
+            String question = document.get("question").toString();
+            String answer = document.get("answer").toString();
             String filePath = filDirectory + "\\" + id.toString() + ".mp3";
             try {
-                String result = speechApi.generateMp3(name, filePath, options, true);
+                String result = speechApi.generateMp3(answer, filePath, options, true);
                 print(result);
-                Document idDocument = new Document("_id", id);
-                generateHistory.insertOne(idDocument);
+                addToTTS.createTTSInfo(iid, question, answer, path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
