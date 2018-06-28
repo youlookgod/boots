@@ -38,7 +38,7 @@ public class LicenseCount {
         List<TestDto> testDtos = getSnWithGrouprobot(mongoDatabase);
         //exportActiveSn(testDtos);
 
-        //updateRobotLicenseCount(mongoDatabase,testDtos);
+        updateRobotLicenseCount(mongoDatabase,testDtos);
         mongoClient.close();
     }
 
