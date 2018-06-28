@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  */
 public class LicenseCount {
     private static String uri = "mongodb://deepbrain:deepbrainadmin@122.144.200.102:47017/deepbrain?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
+
     //private static String uri = "mongodb://deepNlpAdminUser:ssd2es3cke@192.168.20.89:27017/deep-nlp-admin?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
     public static void main(String[] args) {
         MongoClientURI mongoClientURI = new MongoClientURI(uri);
@@ -35,13 +36,13 @@ public class LicenseCount {
         //MongoDatabase mongoDatabase = mongoClient.getDatabase("deep-nlp-admin");
 
         List<TestDto> testDtos = getSnWithGrouprobot(mongoDatabase);
-        exportActiveSn(testDtos);
+        //exportActiveSn(testDtos);
 
         //updateRobotLicenseCount(mongoDatabase,testDtos);
         mongoClient.close();
     }
 
-    private static void updateRobotLicenseCount(MongoDatabase mongoDatabase,List<TestDto> testDtos){
+    private static void updateRobotLicenseCount(MongoDatabase mongoDatabase, List<TestDto> testDtos) {
         MongoCollection<Document> robotLicenseCountCollection = mongoDatabase.getCollection("RobotLicenseCount");
         FindIterable<Document> robotLicense = robotLicenseCountCollection.find();
         MongoCursor<Document> cursor = robotLicense.iterator();
@@ -66,17 +67,17 @@ public class LicenseCount {
         }
         System.out.println(licenseCounts.size());
 
-        licenseCounts.stream().forEach(count->{
-            testDtos.stream().forEach(s->{
+        licenseCounts.stream().forEach(count -> {
+            testDtos.stream().forEach(s -> {
                 if (s.getAppId().equals(count.getAppId()) && s.getRobotId().equals(count.getRobotId())) {
-                    int activeLicense = count.getActiveLicense()+s.getNumber();
-                    int remainderLicense = count.getRemainderLicense()-s.getNumber();
-                    Document filter = new Document("_id",new ObjectId(count.getId()));
-                    Document update = new Document("_id",new ObjectId(count.getId())).append("appId",count.getAppId()).append("robotId",count.getRobotId())
-                            .append("totalLicense",count.getTotalLicense()).append("activeLicense",activeLicense).append("remainderLicense",remainderLicense);
+                    int activeLicense = count.getActiveLicense() + s.getNumber();
+                    int remainderLicense = count.getRemainderLicense() - s.getNumber();
+                    Document filter = new Document("_id", new ObjectId(count.getId()));
+                    Document update = new Document("_id", new ObjectId(count.getId())).append("appId", count.getAppId()).append("robotId", count.getRobotId())
+                            .append("totalLicense", count.getTotalLicense()).append("activeLicense", activeLicense).append("remainderLicense", remainderLicense);
 
                     Document updateDocument = new Document();
-                    updateDocument.append("$set",update);
+                    updateDocument.append("$set", update);
                     robotLicenseCountCollection.updateOne(filter, updateDocument);
                 }
             });
@@ -89,7 +90,7 @@ public class LicenseCount {
      * @param testDtos
      * @return: void
      */
-    private static void exportActiveSn(List<TestDto> testDtos){
+    private static void exportActiveSn(List<TestDto> testDtos) {
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet sheet = wb.createSheet();
         XSSFRow row0 = sheet.createRow(0);
@@ -100,7 +101,7 @@ public class LicenseCount {
         XSSFCell cell2 = row0.createCell(2);
         cell2.setCellValue("数量");
 
-        int i=1;
+        int i = 1;
         for (TestDto dto : testDtos) {
             XSSFRow row = sheet.createRow(i);
             XSSFCell cell01 = row.createCell(0);
@@ -125,7 +126,7 @@ public class LicenseCount {
      * @param mongoDatabase
      * @return: java.util.List<com.deep.CountLicenseHistory.TestDto>
      */
-    private static List<TestDto> getSnWithGrouprobot(MongoDatabase mongoDatabase){
+    private static List<TestDto> getSnWithGrouprobot(MongoDatabase mongoDatabase) {
         MongoCollection<Document> deviceSNCollection = mongoDatabase.getCollection("DeviceSN");
 
         FindIterable<Document> findIterable = deviceSNCollection.find().noCursorTimeout(true);
@@ -145,15 +146,15 @@ public class LicenseCount {
 
         List<TestDto> testDtos = new ArrayList<>();
 
-        deviceSNList.stream().filter(s->s.getAppId()!=null).collect(Collectors.groupingBy(DeviceSN::getAppId)).forEach((appId, list)->{
-            list.stream().filter(a->a.getRobotId()!=null).collect(Collectors.groupingBy(DeviceSN::getRobotId)).forEach((robotId,rllist)->{
+        deviceSNList.stream().filter(s -> s.getAppId() != null).collect(Collectors.groupingBy(DeviceSN::getAppId)).forEach((appId, list) -> {
+            list.stream().filter(a -> a.getRobotId() != null).collect(Collectors.groupingBy(DeviceSN::getRobotId)).forEach((robotId, rllist) -> {
                 int count = rllist.size();
                 TestDto testDto = new TestDto();
                 testDto.setAppId(appId);
                 testDto.setRobotId(robotId);
                 testDto.setNumber(count);
                 testDtos.add(testDto);
-                System.out.println("appId是"+appId+"===robotId是"+robotId+"的sn数量"+count);
+                System.out.println("appId是" + appId + "===robotId是" + robotId + "的sn数量" + count);
             });
         });
         return testDtos;
