@@ -4,22 +4,138 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class TestMuliptMap {
     public static void main(String[] args) {
         //testMultiMap();
+
+        List<String> testList = new ArrayList<>(10);
+        testList.add("12313");
+        testList.add("545142");
+        int size = testList.size();
+        double f = 45.246335;
+        System.out.println(String.format("%.2f", f));
+
         String str = "false";
-        if(1>0 && (2>1 || "1".equals("2"))){
+        if (1 > 0 && (2 > 1 || "1".equals("2"))) {
             str = "true";
         }
-        System.out.println(str);
+
+        AtomicLong atomicLong = new AtomicLong(0);
+        atomicLong.addAndGet(1);
+
+        Calendar cal11 = Calendar.getInstance();
+        int day11 = cal11.get(Calendar.DATE);
+        cal11.set(Calendar.DATE, day11);
+        Date yesterday = cal11.getTime();
+        cal11.set(Calendar.DATE, day11 - 7);
+        Date sevenDay = cal11.getTime();
+        List<String> sevenday = getDayBetween(sevenDay, yesterday);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//格式化为年月日
+        SimpleDateFormat sdf1 = new SimpleDateFormat("M/d");//格式化为年月日
+        String date11 = sdf1.format(new Date());
+        Calendar cal1 = Calendar.getInstance();
+        int day1 = cal1.get(Calendar.DATE);
+        cal1.set(Calendar.DATE, day1 - 7);
+        String beforeSevenDay = sdf.format(cal1.getTime());
+
+        String date = "2018-07-04";
+        Date d = null;
+        String md = null;
+        try {
+            d = sdf.parse(date);
+            md = sdf1.format(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar cal = Calendar.getInstance();
+        //cal.setTime(new Date());
+        int day = cal.get(Calendar.DATE);
+
+        cal.set(Calendar.DATE, day);
+        Date beforeDay = cal.getTime();
+        String before = sdf.format(beforeDay);
+
+        List<String> sevenDays = getDayBetween(beforeDay, new Date());
+
+
+//        Date date = new Date();
+//        GregorianCalendar gc = (GregorianCalendar)Calendar.getInstance();
+//        gc.setTime(date);
+//        int day = gc.get(5);
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//格式化为年月日
+//        Date beginOfToday = new Date();
+//        String today = sdf.format(beginOfToday);
+
+//        String yesterday = sdf.format(getBeginOfYesterday());
+//        String today = sdf.format(getBeginOfToday());
+//
+//        Date beginOfYesterday = getBeginOfYesterday();
+//        Date endOfYesterday = getEndOfYesterday();
+//
+//        Date beginOfToday = getBeginOfToday();
+//        Date endOfToday = getEndOfToday();
+
 
        /* String name = "random.value";
         String name1 = name.substring("random.".length());
         System.out.println(name1);*/
+    }
+
+    public static List<String> getDayBetween(Date beginDate, Date endDate) {
+        List<String> result = new ArrayList();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar min = Calendar.getInstance();
+        Calendar max = Calendar.getInstance();
+        min.setTime(beginDate);
+        max.setTime(endDate);
+        Calendar curr = min;
+
+        while (curr.before(max)) {
+            result.add(sdf.format(curr.getTime()));
+            curr.add(5, 1);
+        }
+
+        return result;
+    }
+
+    public static Date getEndOfYesterday() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getEndOfToday());
+        cal.add(5, -1);
+        return cal.getTime();
+    }
+
+    public static Date getEndOfToday() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(11, 23);
+        cal.set(12, 59);
+        cal.set(13, 59);
+        cal.set(14, 999);
+        return cal.getTime();
+    }
+
+    public static Date getBeginOfYesterday() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getBeginOfToday());
+        cal.add(5, -1);
+        return cal.getTime();
+    }
+
+    private static Date getBeginOfToday() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(11, 0);
+        cal.set(12, 0);
+        cal.set(13, 0);
+        cal.set(14, 0);
+        return cal.getTime();
     }
 
     private static void testMultiMap() {

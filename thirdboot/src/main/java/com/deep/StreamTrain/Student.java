@@ -9,6 +9,7 @@ public class Student {
     private String name;
     private String address;
     private String phone;
+    private long height;
 
     public Student() {
     }
@@ -17,6 +18,13 @@ public class Student {
         this.name = name;
         this.address = address;
         this.phone = phone;
+    }
+
+    public Student(String name,String address,String phone,long height) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.height = height;
     }
 
     public String getName() {
@@ -41,5 +49,13 @@ public class Student {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public long getHeight() {
+        return height;
+    }
+
+    public void setHeight(long height) {
+        this.height = height;
     }
 }

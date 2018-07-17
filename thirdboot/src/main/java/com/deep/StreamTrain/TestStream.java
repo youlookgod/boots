@@ -1,6 +1,12 @@
 package com.deep.StreamTrain;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.annotation.Order;
+
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -12,20 +18,116 @@ public class TestStream {
     public static void main(String[] args) {
         //testToMap();
         //System.out.println(efficiency());
-        testFilter();
+        //testFilter();
+        //testSort();
 
-        Random random = new Random();
-        int n = random.nextInt(0);
-        System.out.println(n);
+        //testDistinct();
+
+        testStreamMap();
+
+        //testGrouping();
+
+//        Random random = new Random();
+//        int n = random.nextInt(0);
+//        System.out.println(n);
+    }
+
+    private static void testStreamMap() {
+        List<Order> orderList = new ArrayList<Order>() {
+            {
+                add(new Order("213", "香蕉", 12,"2018-07-10"));
+                add(new Order("4424", "苹果", 18,"2018-07-10"));
+                add(new Order("241524", "苹果", 10,"2018-07-10"));
+                add(new Order("124111", "梨", 13,"2018-07-10"));
+                add(new Order("124111", "梨", 13,"2018-07-10"));
+                add(new Order("124111", "苹果", 13,"2018-07-09"));
+            }
+        };
+
+        List<String> idList = orderList.stream().map(Order::getId).collect(Collectors.toList());
+        List<String> typeList = orderList.stream().filter(distinctByKey(Order::getType)).map(Order::getType).collect(Collectors.toList());
+     }
+
+    private static void testGrouping() {
+        List<Order> orderList = new ArrayList<Order>() {
+            {
+                add(new Order("213", "香蕉", 12,"2018-07-10"));
+                add(new Order("4424", "苹果", 18,"2018-07-10"));
+                add(new Order("2415", "苹果", 10,"2018-07-10"));
+                add(new Order("124111", "梨", 13,"2018-07-10"));
+                add(new Order("124111", "梨", 13,"2018-07-10"));
+                add(new Order("124111", "苹果", 13,"2018-07-09"));
+            }
+        };
+        orderList.stream().collect(Collectors.groupingBy(Order::getType,Collectors.groupingBy(Order::getDate))).forEach((v,list)->{
+            String type = v;
+            System.out.println(v);
+            list.forEach((k1,v1)->{
+                System.out.println(v1.size());
+                System.out.println(v1.get(0).getId());
+            });
+        });
+
+//        orderList.stream().forEach(v->{
+//            String name = v.getType();
+//            v.setName(name);
+//        });
+//        orderList.stream().collect(Collectors.groupingBy(Order::getName)).forEach((v,list)->{
+//            System.out.println(v);
+//        });
+//        Map<String, Long> priceMap = orderList.stream().collect(Collectors.groupingBy(Order::getType, Collectors.summingLong(Order::getPrice)));
+//        priceMap.forEach((type, count) -> {
+//            System.out.println(type + "" + count);
+//        });
+    }
+
+    private static void testDistinct() {
+        List<Student> studentList = new ArrayList<Student>() {
+            {
+                add(new Student("张三", null, "445656", 172));
+                add(new Student("王五", "湖南", "18874525", 178));
+                add(new Student("王五", "湖北", null, 170));
+                add(new Student("瘪三", "湖南", "169481", 173));
+            }
+        };
+        List<String> addressList = studentList.stream().map(Student::getAddress).collect(Collectors.toList());
+        if (addressList.contains("湖南")) {
+            System.out.println("有值");
+        }
+        studentList = studentList.stream().filter(distinctByKey(s -> s.getName())).collect(Collectors.toList());
+        System.out.println(studentList.size());
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    private static void testSort() {
+        List<Student> studentList = new ArrayList<Student>() {
+            {
+                add(new Student("张三", null, "445656", 172));
+                add(new Student("", "湖南", "18874525", 178));
+                add(new Student("王五", "湖北", null, 170));
+                add(new Student("瘪三", "湖南", "169481", 173));
+            }
+        };
+
+        studentList.stream().filter(s -> StringUtils.isNotEmpty(s.getName()) && StringUtils.isNotEmpty(s.getAddress()) && StringUtils.isNotEmpty(s.getPhone())).forEach(v -> {
+            System.out.println(v.getName());
+        });
+        Comparator<Student> comparator = Comparator.comparing(Student::getHeight);
+        studentList.sort(comparator.reversed());
+        studentList.stream().forEach(v -> System.out.println(v.getHeight()));
     }
 
     private static void testFilter() {
-        List<Student> studentList = new ArrayList<Student>(){
+        List<Student> studentList = new ArrayList<Student>() {
             {
-                add(new Student("张三","湖北",""));
-                add(new Student("李四","湖南",""));
-                add(new Student("王五","湖北",""));
-                add(new Student("瘪三","湖南",""));
+                add(new Student("张三", "湖北", ""));
+                add(new Student("李四", "湖南", ""));
+                add(new Student("王五", "湖北", ""));
+                add(new Student("瘪三", "湖南", ""));
             }
         };
 
@@ -126,5 +228,60 @@ public class TestStream {
         });
 
         System.out.println("测试");
+    }
+
+    static class Order {
+        private String id;
+        private String name;
+        private String type;
+        private long price;
+        private String date;
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public Order(String id, String type, long price, String date) {
+            this.id = id;
+            this.type = type;
+            this.price = price;
+            this.date = date;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public long getPrice() {
+            return price;
+        }
+
+        public void setPrice(long price) {
+            this.price = price;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
     }
 }
