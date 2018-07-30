@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -23,13 +24,48 @@ public class TestStream {
 
         //testDistinct();
 
-        testStreamMap();
+        //testStreamMap();
 
         //testGrouping();
+        testGrouping2();
 
 //        Random random = new Random();
 //        int n = random.nextInt(0);
 //        System.out.println(n);
+    }
+
+    private static void testGrouping2() {
+        List<UserRequest> orderList = new ArrayList<UserRequest>() {
+            {
+                add(new UserRequest("r213", "123", "2018-07-10",2));
+                add(new UserRequest("r213", "123", "2018-07-11",3));
+                add(new UserRequest("r213", "124", "2018-07-10",1));
+                add(new UserRequest("r213", "124", "2018-07-11",2));
+                add(new UserRequest("r213", "125", "2018-07-10",2));
+                add(new UserRequest("r213", "125", "2018-07-11",4));
+                add(new UserRequest("r213", "126", "2018-07-10",2));
+                add(new UserRequest("r213", "126", "2018-07-11",6));
+                add(new UserRequest("r214", "234", "2018-07-10",3));
+                add(new UserRequest("r214", "234", "2018-07-11",7));
+                add(new UserRequest("r214", "235", "2018-07-10",2));
+                add(new UserRequest("r214", "235", "2018-07-11",5));
+                add(new UserRequest("r214", "236", "2018-07-10",7));
+                add(new UserRequest("r214", "236", "2018-07-11",8));
+                add(new UserRequest("r214", "237", "2018-07-10",12));
+                add(new UserRequest("r214", "237", "2018-07-11",10));
+            }
+        };
+        orderList.stream().collect(Collectors.groupingBy(UserRequest::getRobotId,Collectors.groupingBy(UserRequest::getUserId))).forEach((robotId,list)->{
+            Map<String, Long> userMap = new HashMap<>();
+            AtomicLong total = new AtomicLong(0);
+            list.forEach((userId,uList)->{
+                long sum = uList.stream().mapToLong(UserRequest::getCount).sum();
+                System.out.println(sum);
+                total.addAndGet(sum);
+                userMap.put(userId, sum);
+            });
+
+        });
     }
 
     private static void testStreamMap() {
@@ -43,6 +79,8 @@ public class TestStream {
                 add(new Order("124111", "苹果", 13,"2018-07-09"));
             }
         };
+
+        long total = orderList.stream().mapToLong(Order::getPrice).sum();
 
         List<String> idList = orderList.stream().map(Order::getId).collect(Collectors.toList());
         List<String> typeList = orderList.stream().filter(distinctByKey(Order::getType)).map(Order::getType).collect(Collectors.toList());
@@ -228,6 +266,51 @@ public class TestStream {
         });
 
         System.out.println("测试");
+    }
+
+    static class UserRequest{
+        private String robotId;
+        private String userId;
+        private String date;
+        private Integer count;
+        public UserRequest(String robotId,String userId,String date,Integer count){
+            this.robotId = robotId;
+            this.userId = userId;
+            this.date = date;
+            this.count = count;
+        }
+
+        public String getRobotId() {
+            return robotId;
+        }
+
+        public void setRobotId(String robotId) {
+            this.robotId = robotId;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public Integer getCount() {
+            return count;
+        }
+
+        public void setCount(Integer count) {
+            this.count = count;
+        }
     }
 
     static class Order {
