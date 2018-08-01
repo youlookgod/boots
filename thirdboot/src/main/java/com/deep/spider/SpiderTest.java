@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * @Author: george
  * @Date: 2018/6/13-11-09
- * @Description:
+ * @Description: 抓取iengine demo数据库中的childrenQuestionAnswer并转成mp3.
  */
 public class SpiderTest {
     private static String uri = "mongodb://iengine:ienginep@122.144.200.8:27017/iengine3?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
