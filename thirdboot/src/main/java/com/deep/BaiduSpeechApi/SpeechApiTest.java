@@ -15,8 +15,8 @@ public class SpeechApiTest {
 
     public static void main(String[] args) {
         SpeechApi speechApi = SpeechApi.getInstance();
-        testGenerateFromFile();
-        //testGenerateMp3(speechApi);
+        //testGenerateFromFile();
+        testGenerateMp3(speechApi);
         //testAsr();
         //runGenerate(speechApi, 50);
 
