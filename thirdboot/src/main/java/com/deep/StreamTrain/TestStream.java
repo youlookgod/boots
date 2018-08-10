@@ -55,17 +55,27 @@ public class TestStream {
                 add(new UserRequest("r214", "237", "2018-07-11",10));
             }
         };
-        orderList.stream().collect(Collectors.groupingBy(UserRequest::getRobotId,Collectors.groupingBy(UserRequest::getUserId))).forEach((robotId,list)->{
+        orderList.stream().collect(Collectors.groupingBy(UserRequest::getRobotId)).forEach((robotId,list)->{
             Map<String, Long> userMap = new HashMap<>();
-            AtomicLong total = new AtomicLong(0);
-            list.forEach((userId,uList)->{
-                long sum = uList.stream().mapToLong(UserRequest::getCount).sum();
-                System.out.println(sum);
-                total.addAndGet(sum);
-                userMap.put(userId, sum);
+            list.stream().collect(Collectors.groupingBy(UserRequest::getUserId)).forEach((userId,uList)->{
+                Long count = uList.stream().mapToLong(UserRequest::getCount).sum();
+                userMap.put(userId,count);
             });
-
+            long sum = userMap.size();
         });
+        System.out.println(111);
+
+//        orderList.stream().collect(Collectors.groupingBy(UserRequest::getRobotId,Collectors.groupingBy(UserRequest::getUserId))).forEach((robotId,list)->{
+//            Map<String, Long> userMap = new HashMap<>();
+//            AtomicLong total = new AtomicLong(0);
+//            list.forEach((userId,uList)->{
+//                long sum = uList.stream().mapToLong(UserRequest::getCount).sum();
+//                System.out.println(sum);
+//                total.addAndGet(sum);
+//                userMap.put(userId, sum);
+//            });
+//
+//        });
     }
 
     private static void testStreamMap() {

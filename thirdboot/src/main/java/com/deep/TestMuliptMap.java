@@ -4,6 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -12,6 +17,36 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TestMuliptMap {
     public static void main(String[] args) {
         //testMultiMap();
+        float f1 = (float) 0.133;
+        String result1 = String.format("%.2f",f1);
+        System.out.println(result1);
+
+        File file = new File("E:\\tempdata\\test.txt");
+        String[] strs = new String[]{"你好","你真好","你太好了","你可以啊"};
+        FileOutputStream fos = null;
+        try{
+            fos = new FileOutputStream(file);
+            StringBuilder sb = new StringBuilder("你好吗##");
+            for (String str : strs) {
+                sb.append(str).append("##");
+            }
+
+            int index = sb.lastIndexOf("##");
+            sb.replace(index, sb.length(), "");
+            String result = sb.toString()+";";
+            fos.write(result.getBytes());
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int sum = 90;
+        int v1 = 11;
+        Float num = ((float) v1 / sum) * 100;
+        num = (float) (Math.round(num * 100)) / 100;
 
         List<String> testList = new ArrayList<>(10);
         testList.add("12313");
