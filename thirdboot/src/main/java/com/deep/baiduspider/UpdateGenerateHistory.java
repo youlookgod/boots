@@ -1,4 +1,4 @@
-package com.deep.spider;
+package com.deep.baiduspider;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -6,15 +6,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import org.bson.BSON;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: george

@@ -1,4 +1,4 @@
-package com.deep.spider;
+package com.deep.baiduspider;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -10,8 +10,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author: george

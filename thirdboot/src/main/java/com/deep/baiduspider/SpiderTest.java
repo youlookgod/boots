@@ -1,8 +1,7 @@
-package com.deep.spider;
+package com.deep.baiduspider;
 
 
 import com.deep.BaiduSpeechApi.SpeechApi;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
