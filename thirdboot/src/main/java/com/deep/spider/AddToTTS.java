@@ -19,7 +19,7 @@ import java.util.Map;
  * @description:
  */
 public class AddToTTS {
-    private static String uri = "mongodb://deepNlpAdminUser:ssd2es3cke@192.168.20.170:27017/deep-nlp-admin?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
+    private static String uri = "mongodb://deepbrain:deepbrainadmin@192.168.20.170:27017/deep-nlp-admin?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
     private static String fileUri = "http://cdnmusic.hezi.360iii.net";
     private static String remoteDir = "/prod/tts/childrenchat/";
 
@@ -32,7 +32,7 @@ public class AddToTTS {
     public AddToTTS() {
         MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
 
-        MongoDatabase mongoDatabase = mongoClient.getDatabase("deep-nlp-admin");
+        MongoDatabase mongoDatabase = mongoClient.getDatabase("deepbrain");
         MongoCollection<Document> ttsCollection = mongoDatabase.getCollection("TTSAudioInfo");
         MongoCollection<Document> childrenQuestionAnswer = mongoDatabase.getCollection("ChildrenQuestionAnswer");
         MongoCollection<Document> resourceData = mongoDatabase.getCollection("ResourceData");
