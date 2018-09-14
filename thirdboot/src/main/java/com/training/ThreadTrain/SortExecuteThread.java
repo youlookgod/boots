@@ -3,7 +3,7 @@ package com.training.ThreadTrain;
 /**
  * george 2018/9/14 14:43
  */
-public class SortExceteThread {
+public class SortExecuteThread {
     public static void main(String[] args) {
         testOrderThread();
     }
