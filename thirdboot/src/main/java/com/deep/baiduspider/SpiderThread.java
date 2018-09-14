@@ -17,18 +17,23 @@ import java.util.HashMap;
 public class SpiderThread implements Runnable {
     private Integer pageNumber;
     private Integer pageSize;
+    private String ttsType;
+    private String voiceType;
 
-    public SpiderThread(Integer pageNumber, Integer pageSize) {
+
+    public SpiderThread(Integer pageNumber, Integer pageSize, String ttsType, String voiceType) {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
+        this.ttsType = ttsType;
+        this.voiceType = voiceType;
     }
 
     @Override
     public void run() {
         SpeechApi speechApi = SpeechApi.getInstance();
         HashMap<String, Object> options = getGenerateOptions();
-        int offset = pageNumber % 5;
-        int index = 24 + offset;
+        int offset = pageNumber % 10;
+        int index = 39 + offset;
         String basePath = "source";
         String path = "source" + index;
         String baseFilDirectory = "F:\\TTSMP3\\source";
@@ -46,18 +51,18 @@ public class SpiderThread implements Runnable {
             Document document = mongoCursor.next();
             Object id = document.get("_id");
             Object answer = document.get("answer");
-            ObjectId iid = new ObjectId(id.toString());
+            ObjectId iid = new ObjectId();
             //如果已经生成，则不重复生成
-            if (null == id || addToTTS.queryExistTTS(answer)) {
+            if (null == id || addToTTS.queryExistTTS(answer, ttsType, voiceType)) {
                 continue;
             }
             String question = document.get("question").toString();
             //String answer = document.get("answer").toString();
-            String filePath = filDirectory + "\\" + id.toString() + ".mp3";
+            String filePath = filDirectory + "\\" + iid.toString() + ".mp3";
             try {
                 String result = speechApi.generateMp3(answer.toString(), filePath, options, true);
                 System.out.println(result);
-                addToTTS.createTTSInfo(iid, question, answer.toString(), path);
+                addToTTS.createTTSInfo(iid, question, answer.toString(), path, ttsType, voiceType);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -16,6 +16,47 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class TestMuliptMap {
     public static void main(String[] args) {
+        ArrayList dayList = new ArrayList<Integer>(){
+            {
+                add(1);
+                add(3);
+                add(4);
+            }
+        };
+
+        ArrayList day2List = new ArrayList<Integer>(){
+            {
+                add(7);
+                add(8);
+                add(6);
+                add(4);
+                add(5);
+                add(1);
+                add(2);
+                add(3);
+                add(21);
+                add(28);
+                add(19);
+                add(17);
+                add(24);
+                add(16);
+                add(11);
+                add(14);
+            }
+        };
+
+        if (dayList.size() < day2List.size()) {
+            day2List.stream().forEach(v->{
+                int index = (Integer) v;
+                if (!dayList.contains(v)) {
+                    dayList.add(v);
+                }
+            });
+        }
+
+        Collections.sort(dayList);
+        //Comparator<Integer> comparator = Comparator.comparing(Integer);
+
         //testMultiMap();
         float f1 = (float) 0.133;
         String result1 = String.format("%.2f",f1);

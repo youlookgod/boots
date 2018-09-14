@@ -55,7 +55,7 @@ public class SpiderTest {
             ObjectId iid = new ObjectId(id.toString());
             Object answer = document.get("answer");
             //如果已经生成，则不重复生成
-            if (null == answer || addToTTS.queryExistTTS(answer)) {
+            if (null == answer || addToTTS.queryExistTTS(answer,"baidu","4")) {
                 continue;
             }
             boolean ff = checkDirectorySize(filDirectory);
@@ -71,7 +71,7 @@ public class SpiderTest {
             try {
                 String result = speechApi.generateMp3(answer.toString(), filePath, options, true);
                 print(result);
-                addToTTS.createTTSInfo(iid, question, answer.toString(), path);
+                //addToTTS.createTTSInfo(iid, question, answer.toString(), path);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -17,7 +17,7 @@ import java.util.Date;
  * @description:
  */
 public class AddToTTS {
-    private static String uri = "mongodb://deepbrain:deepbrainadmin@192.168.20.170:27017/deep-nlp-admin?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
+    private static String uri = "mongodb://deepbrain:deepbrainadmin@192.168.20.170:27017/deepbrain?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
     private static String fileUri = "http://cdnmusic.hezi.360iii.net";
     private static String remoteDir = "/prod/tts/childrenchat/";
 
@@ -42,10 +42,10 @@ public class AddToTTS {
         this.functionTypeExt = functionTypeExt;
     }
 
-    public boolean queryExistTTS(Object answer) {
+    public boolean queryExistTTS(Object answer,String ttsType,String voiceType) {
         boolean flag = false;
         Document filter = new Document();
-        filter.append("answer", answer.toString());
+        filter.append("answer", answer.toString()).append("ttsType",ttsType).append("voiceType",voiceType);
         FindIterable<Document> iterables = ttsCollection.find(filter);
         MongoCursor<Document> cursor = iterables.iterator();
         while (cursor.hasNext()) {
@@ -54,11 +54,11 @@ public class AddToTTS {
         return flag;
     }
 
-    public void createTTSInfo(ObjectId id, String question, String answer, String path) {
+    public void createTTSInfo(ObjectId id, String question, String answer, String path,String ttsType,String voiceType) {
         if (null != id) {
             Document document = new Document();
             String filePath = remoteDir + path + "/" + id.toString() + ".mp3";
-            document.append("_id", id).append("question", question).append("answer", answer).append("fileUri", fileUri).append("filePath", filePath).append("ttsType", "百度").append("createdTime", new Date()).append("enabled", true);
+            document.append("_id", id).append("question", question).append("answer", answer).append("fileUri", fileUri).append("filePath", filePath).append("ttsType", ttsType).append("voiceType",voiceType).append("createdTime", new Date()).append("enabled", true);
             ttsCollection.insertOne(document);
         }
     }
