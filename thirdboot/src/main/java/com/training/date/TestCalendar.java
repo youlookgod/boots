@@ -1,4 +1,4 @@
-package com.training.DateTrain;
+package com.training.date;
 
 import java.text.SimpleDateFormat;
 import java.util.*;

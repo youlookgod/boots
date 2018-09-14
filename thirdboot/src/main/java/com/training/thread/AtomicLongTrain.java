@@ -1,4 +1,4 @@
-package com.training.ThreadTrain;
+package com.training.thread;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class AtomicLongTrain {

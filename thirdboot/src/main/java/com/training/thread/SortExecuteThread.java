@@ -1,4 +1,4 @@
-package com.training.ThreadTrain;
+package com.training.thread;
 
 /**
  * george 2018/9/14 14:43

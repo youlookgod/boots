@@ -1,4 +1,4 @@
-package com.training.StreamTrain;
+package com.training.stream;
 
 import com.training.domain.Order;
 import com.training.domain.Student;

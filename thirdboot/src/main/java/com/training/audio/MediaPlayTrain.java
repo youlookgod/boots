@@ -1,4 +1,4 @@
-package com.training.MediaTrain;
+package com.training.audio;
 
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;

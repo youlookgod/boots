@@ -1,15 +1,19 @@
 package com.training.domain;
 
+import lombok.Data;
+
 /**
  * @Author: George
  * @Date 2018/5/14 10:20
  * @Description
  **/
+@Data
 public class Student {
     private String name;
     private String address;
     private String phone;
     private long height;
+    private Order order;
 
     public Student() {
     }
