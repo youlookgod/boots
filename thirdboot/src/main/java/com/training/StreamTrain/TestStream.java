@@ -1,5 +1,8 @@
 package com.training.StreamTrain;
 
+import com.training.domain.Order;
+import com.training.domain.Student;
+import com.training.domain.UserRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -274,105 +277,5 @@ public class TestStream {
         });
 
         System.out.println("测试");
-    }
-
-    static class UserRequest{
-        private String robotId;
-        private String userId;
-        private String date;
-        private Integer count;
-        public UserRequest(String robotId,String userId,String date,Integer count){
-            this.robotId = robotId;
-            this.userId = userId;
-            this.date = date;
-            this.count = count;
-        }
-
-        public String getRobotId() {
-            return robotId;
-        }
-
-        public void setRobotId(String robotId) {
-            this.robotId = robotId;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public Integer getCount() {
-            return count;
-        }
-
-        public void setCount(Integer count) {
-            this.count = count;
-        }
-    }
-
-    static class Order {
-        private String id;
-        private String name;
-        private String type;
-        private long price;
-        private String date;
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public Order(String id, String type, long price, String date) {
-            this.id = id;
-            this.type = type;
-            this.price = price;
-            this.date = date;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public long getPrice() {
-            return price;
-        }
-
-        public void setPrice(long price) {
-            this.price = price;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
     }
 }

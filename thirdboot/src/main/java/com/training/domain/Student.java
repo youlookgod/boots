@@ -1,4 +1,4 @@
-package com.training.StreamTrain;
+package com.training.domain;
 
 /**
  * @Author: George
