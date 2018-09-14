@@ -1,4 +1,4 @@
-package com.deep.StreamTrain;
+package com.training.StreamTrain;
 
 /**
  * @Author: George

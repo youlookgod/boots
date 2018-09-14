@@ -1,11 +1,9 @@
-package com.deep.StreamTrain;
+package com.training.StreamTrain;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.annotation.Order;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -55,9 +53,9 @@ public class TestStream {
                 add(new UserRequest("r214", "237", "2018-07-11",10));
             }
         };
-        orderList.stream().collect(Collectors.groupingBy(UserRequest::getRobotId)).forEach((robotId,list)->{
+        orderList.stream().collect(Collectors.groupingBy(UserRequest::getRobotId)).forEach((robotId, list)->{
             Map<String, Long> userMap = new HashMap<>();
-            list.stream().collect(Collectors.groupingBy(UserRequest::getUserId)).forEach((userId,uList)->{
+            list.stream().collect(Collectors.groupingBy(UserRequest::getUserId)).forEach((userId, uList)->{
                 Long count = uList.stream().mapToLong(UserRequest::getCount).sum();
                 userMap.put(userId,count);
             });
@@ -107,7 +105,7 @@ public class TestStream {
                 add(new Order("124111", "苹果", 13,"2018-07-09"));
             }
         };
-        orderList.stream().collect(Collectors.groupingBy(Order::getType,Collectors.groupingBy(Order::getDate))).forEach((v,list)->{
+        orderList.stream().collect(Collectors.groupingBy(Order::getType,Collectors.groupingBy(Order::getDate))).forEach((v, list)->{
             String type = v;
             System.out.println(v);
             list.forEach((k1,v1)->{
