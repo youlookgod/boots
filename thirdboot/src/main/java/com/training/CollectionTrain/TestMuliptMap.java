@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class TestMuliptMap {
     public static void main(String[] args) {
-
+        testMultiMap();
     }
 
     private static void testMultiMap() {
