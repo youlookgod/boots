@@ -31,6 +31,14 @@ public class Student {
         this.height = height;
     }
 
+    public Student(String name,String address,String phone,long height,Order order) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.height = height;
+        this.order = order;
+    }
+
     public String getName() {
         return name;
     }
