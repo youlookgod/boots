@@ -121,6 +121,12 @@ public class HciCloudTtsMain {
         System.out.println("hciRelease Success");
     }
 
+    /**
+     * 功能描述:合并2个byte
+     *
+     * @param byte1 数组1
+     * @param byte2 数组2
+     */
     private static byte[] addByte(byte[] byte1, byte[] byte2) {
         byte[] byte3 = new byte[byte1.length + byte2.length];
         System.arraycopy(byte1, 0, byte3, 0, byte1.length);
