@@ -7,31 +7,32 @@ import lombok.Data;
  * @Date 2018/5/14 10:20
  * @Description
  **/
-@Data
+//@Data
 public class Student {
     private String name;
     private String address;
     private String phone;
     private long height;
     private Order order;
+    public static String test;
 
     public Student() {
     }
 
-    public Student(String name,String address,String phone) {
+    public Student(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;
     }
 
-    public Student(String name,String address,String phone,long height) {
+    public Student(String name, String address, String phone, long height) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.height = height;
     }
 
-    public Student(String name,String address,String phone,long height,Order order) {
+    public Student(String name, String address, String phone, long height, Order order) {
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -69,5 +70,17 @@ public class Student {
 
     public void setHeight(long height) {
         this.height = height;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    private void sayHello(String name) {
+        System.out.println("Hello " + name + "!");
     }
 }
