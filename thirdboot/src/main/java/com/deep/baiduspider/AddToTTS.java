@@ -19,7 +19,7 @@ import java.util.Date;
 public class AddToTTS {
     private static String uri = "mongodb://deepbrain:deepbrainadmin@192.168.20.170:27017/deepbrain?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
     private static String fileUri = "http://cdnmusic.hezi.360iii.net";
-    private static String remoteDir = "/prod/tts/childrenchat/";
+    private static String remoteDir = "/vioce1/prod/tts/childrenchat/";
 
     private MongoClient mongoClient;
     private MongoCollection<Document> ttsCollection;
