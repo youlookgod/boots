@@ -19,7 +19,7 @@ import java.io.File;
 public class UpdateGenerateHistory {
     private static String uri = "mongodb://iengine:ienginep@122.144.200.8:27017/iengine3?maxPoolSize=1000&minPoolSize=10&connectTimeoutMS=30000";
     private static String fileUri = "http://cdnmusic.hezi.360iii.net";
-    private static String remoteDir = "/prod/tts/childrenchat/";
+    private static String remoteDir = "/vioce1/prod/tts/childrenchat/";
     //private static String remoteDirExt = "source1/";
 
     public static void main(String[] args) {
