@@ -13,8 +13,8 @@ import java.lang.reflect.*;
 public class TestReflect {
     public static void main(String[] args) {
 //        getFields();
-        getMethods();
-//        getConstructors();
+//        getMethods();
+        getConstructors();
     }
 
     /**
