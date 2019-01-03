@@ -1,23 +1,14 @@
 package com.training.arithmetic;
 
-import org.apache.commons.lang3.StringUtils;
-
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
- * george 2018/11/9 11:05 加密与解密
+ * Created by louis.wei on 2017/5/27.
  */
-public class EncryptAndDecrypt {
+public class Base64Utils {
 
     private static final String DEFAULT_ENCODING = "UTF-8";
-
-    public static final String CREATED_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
-    public static final String UTC_TIME_ZONE = "UTC";
     private static final char LAST2BYTE = (char) Integer.parseInt("00000011", 2);
     private static final char LAST4BYTE = (char) Integer.parseInt("00001111", 2);
     private static final char LAST6BYTE = (char) Integer.parseInt("00111111", 2);
@@ -29,59 +20,28 @@ public class EncryptAndDecrypt {
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
 
-
-    public static void main(String[] args) {
-        String nonce = "MjAxOTAxMDIxMDQ1MzI4OTI1";
-        String createdTime = "2019-01-02T02:45:32";
-        String robotId = "11b74db20d3c11e79cf590b11c244b31";
-        String privateKey = "QjgtN0UtMEItMjMtN0EtMzctMDItRTQtMTEtQkEtMjYtNzEtQTMtM0EtNTQtQUItMTgtNDMtNzktNEY="; //客户端校验后值
-        boolean flag = false;
-        if (StringUtils.isNotEmpty(nonce) && nonce.length() > 16) {
-            if (!validCreatedTime(createdTime)) {
-                System.out.println("时间错误");
-                return;
-            }
-            String validateKey = Base64Utils.doPasswordDigest(nonce, createdTime, robotId);
-            System.out.println(validateKey);
-            flag = StringUtils.equalsIgnoreCase(privateKey, validateKey);
-        }
-        System.out.println(flag);
-    }
-
-    public static String doPasswordDigest(String nonce, String created, String key) {
+    public static String doPasswordDigest(String nonce, String created, String privateKey) {
         String passwordDigest = null;
         try {
             byte[] b1 = nonce != null ? nonce.getBytes("UTF-8") : new byte[0];
             byte[] b2 = created != null ? created.getBytes("UTF-8") : new byte[0];
-            byte[] b3 = key != null ? key.getBytes("UTF-8") : new byte[0];
+            byte[] b3 = privateKey != null ? privateKey.getBytes("UTF-8") : new byte[0];
             byte[] b4 = new byte[b1.length + b2.length + b3.length];
             int offset = 0;
             System.arraycopy(b1, 0, b4, offset, b1.length);
             offset += b1.length;
-
             System.arraycopy(b2, 0, b4, offset, b2.length);
             offset += b2.length;
-
             System.arraycopy(b3, 0, b4, offset, b3.length);
-
             byte[] digestBytes = generateDigest(b4);
-            passwordDigest = base64Encode(digestBytes);
+            passwordDigest = Base64Utils.base64Encode(digestBytes);
         } catch (Exception e) {
-            e.printStackTrace();
+            //logger.error(e);
         }
         return passwordDigest;
     }
 
-    /**
-     * Generate a (SHA1) digest of the input bytes. The MessageDigest instance
-     * that backs this method is cached for efficiency.
-     *
-     * @param inputBytes the bytes to digest
-     * @return the digest of the input bytes
-     * @throws Exception
-     */
-    public static byte[] generateDigest(byte[] inputBytes)
-            throws Exception {
+    public static byte[] generateDigest(byte[] inputBytes) throws Exception {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
             return digest.digest(inputBytes);
@@ -132,29 +92,8 @@ public class EncryptAndDecrypt {
         return to.toString();
     }
 
-    public static Date fromCreated(String created) {
-        Date createDate = null;
-        try {
-            createDate = getDateFormatter().parse(created);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return createDate;
+    public static String base64Encode(String from) throws UnsupportedEncodingException {
+        return base64Encode(from.getBytes(DEFAULT_ENCODING));
     }
 
-    public static boolean validCreatedTime(String createdTime) {
-        Date parsedDate = fromCreated(createdTime);
-        return parsedDate != null;
-    }
-
-    /**
-     * 格式化工具
-     *
-     * @return
-     */
-    public static DateFormat getDateFormatter() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(CREATED_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone(UTC_TIME_ZONE));
-        return dateFormat;
-    }
 }
