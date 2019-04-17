@@ -20,15 +20,15 @@ public class TestStream {
     public static void main(String[] args) {
         //testToMap();
         //System.out.println(efficiency());
-        //testFilter();
+        testFilter();
         //testSort();
 
         //testDistinct();
 
         //testStreamMap();
 
-        //testGrouping();
-        testGrouping2();
+//        testGrouping();
+        //testGrouping2();
 
 //        Random random = new Random();
 //        int n = random.nextInt(0);

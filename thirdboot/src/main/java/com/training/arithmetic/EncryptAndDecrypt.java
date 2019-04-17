@@ -31,10 +31,10 @@ public class EncryptAndDecrypt {
 
 
     public static void main(String[] args) {
-        String nonce = "MjAxOTAxMDIxMDQ1MzI4OTI1";
-        String createdTime = "2019-01-02T02:45:32";
+        String nonce = "MjAxOTAxMDQxMTM5Mzg4NDQ0";
+        String createdTime = "2019-01-04T03:39:38";
         String robotId = "11b74db20d3c11e79cf590b11c244b31";
-        String privateKey = "QjgtN0UtMEItMjMtN0EtMzctMDItRTQtMTEtQkEtMjYtNzEtQTMtM0EtNTQtQUItMTgtNDMtNzktNEY="; //客户端校验后值
+        String privateKey = "xxi2HvWvGg04DHmx+ot3LzfsftI="; //客户端校验后值
         boolean flag = false;
         if (StringUtils.isNotEmpty(nonce) && nonce.length() > 16) {
             if (!validCreatedTime(createdTime)) {
