@@ -1,6 +1,7 @@
 package com.training.arithmetic;
 
 /**
+ * 排序算法
  * george 2018/9/14 14:53
  */
 public class SortArithmetic {

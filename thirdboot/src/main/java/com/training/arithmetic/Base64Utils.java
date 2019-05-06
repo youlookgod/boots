@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
 /**
+ * Base64加密算法
  * Created by louis.wei on 2017/5/27.
  */
 public class Base64Utils {
