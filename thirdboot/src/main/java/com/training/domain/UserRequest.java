@@ -8,6 +8,9 @@ public class UserRequest {
     private String userId;
     private String date;
     private Integer count;
+    public UserRequest(){
+    }
+
     public UserRequest(String robotId,String userId,String date,Integer count){
         this.robotId = robotId;
         this.userId = userId;
